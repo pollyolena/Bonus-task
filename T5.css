@@ -143,7 +143,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px; /* додати відступ вниз */
+    margin-bottom: 10px;
 }
 
 .count {
@@ -216,13 +216,13 @@ body {
 }
 
 .additional-pizzas {
-    display: flex;
+    display: grid;
     justify-content: left;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     margin-bottom: 30px;
     margin-left: 150px;
-    margin-right: 350px;
+    margin-right: 250px;
 }
 
 .photo {
@@ -445,33 +445,30 @@ button {
     font-size: 14px;
 }
 
+
 .right-column {
-    flex: 0.5;
-    background-color: rgb(255, 255, 255);
-    border-left: 1px solid #ddd;
+    flex: 0 0 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex-shrink: 0;
-    overflow-y: auto;
+    border-left: 1px solid #ddd;
 }
 
 .order {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    overflow-y: auto;
 }
 
 .order-item {
     display: flex;
     align-items: center;
-    justify-content: space-between; /*  елементи по краях */
+    justify-content: space-between;
     background-color: rgb(242, 242, 242);
     border-bottom: 1px solid #ccc;
 }
 
 .pizza-info {
-    flex-grow: 1; /* щоб зайняти всі доступні простори */
+    flex-grow: 1;
 }
 
 .col {
@@ -620,7 +617,6 @@ button {
     background-color: rgb(255, 255, 255);
     text-align: left;
 }
-
 
 .mgi {
     width: 100%;
