@@ -1,53 +1,79 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var pivot = new WebDataRocks({
-        container: "#pivot-container",
-        toolbar: true, // панель інстр
+document.addEventListener('DOMContentLoaded', () => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function prepareReportData(cartItems) {
+        const reportData = [];
+        cartItems.forEach(item => {
+            reportData.push({
+                "Піца": item.name,
+                "Розмір": item.size,
+                "Кількість": item.quantity,
+                "Ціна": item.price * item.quantity
+            });
+        });
+        return reportData;
+    }
+
+    // Відображення звіту
+    new WebDataRocks({
+        container: "#table",
+        toolbar: true,
         report: {
             dataSource: {
-                data: getPizzaData()
+                data: prepareReportData(cart)
             },
             slice: {
-                rows: [
-                    { uniqueName: "Category" },
-                    { uniqueName: "Name" }
-                ],
-                columns: [
-                    { uniqueName: "Measures" }
-                ],
-                measures: [
-                    {
-                        uniqueName: "Price",
-                        aggregation: "sum",
-                        format: "currency"
-                    },
-                    {
-                        uniqueName: "Quantity",
-                        aggregation: "sum"
-                    }
-                ]
-            },
-            formats: [
-                {
-                    name: "currency",
-                    decimalPlaces: 2,
-                    currencySymbol: "₴",
-                    currencySymbolAlign: "left"
-                }
-            ]
+                rows: [{
+                    uniqueName: "Піца"
+                }],
+                columns: [{
+                    uniqueName: "Розмір"
+                }],
+                measures: [{
+                    uniqueName: "Кількість",
+                    aggregation: "sum"
+                }]
+            }
         }
     });
 
-    function getPizzaData() {
-        return [
-            { "Category": "М'ясні", "Name": "Імпреза", "Price": 99, "Quantity": 1 },
-            { "Category": "М'ясні", "Name": "Імпреза", "Price": 169, "Quantity": 1 },
-            { "Category": "М'ясні", "Name": "BBQ", "Price": 139, "Quantity": 1 },
-            { "Category": "М'ясні", "Name": "BBQ", "Price": 199, "Quantity": 1 },
-            { "Category": "М'ясні", "Name": "Міксовий поло", "Price": 115, "Quantity": 1 },
-            { "Category": "М'ясні", "Name": "Міксовий поло", "Price": 179, "Quantity": 1 },
-            { "Category": "Морські", "Name": "Дольче Маре", "Price": 399, "Quantity": 1 },
-            { "Category": "Морські", "Name": "Россо Густо", "Price": 189, "Quantity": 1 },
-            { "Category": "Морські", "Name": "Россо Густо", "Price": 299, "Quantity": 1 }
-        ];
+    function drawChart(cartItems) {
+        const pizzaCounts = {};
+        cartItems.forEach(item => {
+            pizzaCounts[item.name] = (pizzaCounts[item.name] || 0) + item.quantity;
+        });
+
+        const chartData = [];
+        for (const pizza in pizzaCounts) {
+            chartData.push({
+                name: pizza,
+                y: pizzaCounts[pizza]
+            });
+        }
+
+        Highcharts.chart('pizzaChart', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Замовлення'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                name: 'Кількість',
+                data: chartData
+            }]
+        });
     }
+
+    drawChart(cart);
 });
