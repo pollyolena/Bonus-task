@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartCountElement = document.querySelector('.order .count');
+    const cartCountElement = document.querySelector('.order .count'); 
     const cartItemsContainer = document.getElementById('order-container');
     const totalPriceElement = document.querySelector('.order-footer p:last-child');
     const clearOrderButton = document.querySelector('.clear-order');
+    const pizzaItems = document.querySelectorAll('.pizza-item'); 
 
     function updateCartCount() {
         cartCountElement.textContent = cart.length;
@@ -65,7 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             cartItemsContainer.appendChild(cartItemElement);
         });
-        updateCartCount(); // Update count when items are rendered
+        updateCartCount();
+    }
+
+    function updatePizzaCount() {
+        const visiblePizzaItems = document.querySelectorAll('.pizza-item:not([style*="display: none"])');
+        document.querySelector('.centered .count').textContent = visiblePizzaItems.length;
     }
 
     document.querySelectorAll('.ball').forEach(button => {
@@ -77,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const weight = sizeOption.querySelector('img').nextSibling.textContent.trim();
             const price = parseInt(sizeOption.querySelector('.siza').textContent);
 
-            // Adjust image URL based on the specified logic for the right column
             let image;
             if (name === 'Імпреза') {
                 image = 'im/1h.png';
@@ -90,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (name === 'Россо Густо') {
                 image = 'im/5h.png';
             }
-            
 
             const existingItem = cart.find(item => item.name === name && item.size === size);
             if (existingItem) {
@@ -102,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderCartItems();
             saveCart();
             updateTotalPrice();
+            updatePizzaCount();
         });
     });
 
@@ -111,23 +116,41 @@ document.addEventListener('DOMContentLoaded', () => {
         saveCart();
         updateTotalPrice();
         updateCartCount();
+        updatePizzaCount();
     });
 
-    // Filter functionality
-    document.querySelectorAll('.pizza-category button').forEach(button => {
+    document.querySelectorAll('.form').forEach(button => {
         button.addEventListener('click', () => {
-            const filter = button.textContent.trim();
-            document.querySelectorAll('.pizza-item').forEach(item => {
-                if (filter === 'Усі' || item.querySelector('.gr').textContent.includes(filter)) {
-                    item.style.display = 'block';
+            const filter = button.getAttribute('data-filter');
+            pizzaItems.forEach(item => {
+                const name = item.querySelector('h3').textContent;
+                const isMeat = item.querySelector('.gr') && item.querySelector('.gr').textContent.includes('М\'ясна піца');
+                const isPineapple = name === 'Імпреза' || name === 'Міксовий поло';
+                const isMushrooms = name === 'BBQ';
+                const isSeafood = item.querySelector('.gr') && item.querySelector('.gr').textContent.includes('Морська піца');
+                const isVega = name === 'Россо Густо';
+
+                if (filter === 'all') {
+                    item.style.display = '';
+                } else if (filter === 'meat' && isMeat) {
+                    item.style.display = '';
+                } else if (filter === 'pineapple' && isPineapple) {
+                    item.style.display = '';
+                } else if (filter === 'mushrooms' && isMushrooms) {
+                    item.style.display = '';
+                } else if (filter === 'seafood' && isSeafood) {
+                    item.style.display = '';
+                } else if (filter === 'vega' && isVega) {
+                    item.style.display = '';
                 } else {
                     item.style.display = 'none';
                 }
             });
+            updatePizzaCount();
         });
     });
 
-    // Initial render
     renderCartItems();
     updateTotalPrice();
+    updatePizzaCount();
 });
