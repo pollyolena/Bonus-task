@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pizza KMA</title>
-    <link rel="stylesheet" href="T5.css">
+    <link rel="stylesheet" href="task5.css">
 </head>
 <body>
     <div class="container">
@@ -34,15 +34,15 @@
                     <span class="count">8</span>
                 </div>
                 <div class="pizza-category">
-                    <button class="form">Усі</button>
-                    <button class="form">М'ясні</button>
-                    <button class="form">З ананасами</button>
-                    <button class="form">З грибами</button>
-                    <button class="form">З морепродуктами</button>
-                    <button class="form">Вега</button>
+                    <button class="form" data-filter="all">Усі</button>
+                    <button class="form" data-filter="meat">М'ясні</button>
+                    <button class="form" data-filter="pineapple">З ананасами</button>
+                    <button class="form" data-filter="mushrooms">З грибами</button>
+                    <button class="form" data-filter="seafood">З морепродуктами</button>
+                    <button class="form" data-filter="vega">Вега</button>
                 </div>
                 <div class="pizza-list">
-                    <div class="pizza-item">
+                    <div class="pizza-item meat">
                         <div class="new-label">Нова</div>
                         <img src="im/1.png" alt="Імпреза" class="mgi">
                         <h3>Імпреза</h3>
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                     </div>
-                    <div class="pizza-item">
+                    <div class="pizza-item meat">
                         <div class="popular-label">Популярна</div>
                         <img src="im/2.png" alt="BBQ" class="mgi">
                         <h3>BBQ</h3>
@@ -100,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pizza-item">
+                    <div class="pizza-item meat">
                         <img src="im/3.png" alt="Міксовий поло" class="mgi">
                         <h3>Міксовий поло</h3>
                         <p class="gr">М'ясна піца</p>
@@ -228,7 +228,7 @@
                         </p>
                     </div>
                     <img src="im/2h.png" alt="Міксовий поло (Велика)" class="pizza-image">
-                </div>
+                 </div>
                 </div>
             </div>
             <div class="order-footer">
@@ -246,6 +246,6 @@
             <span>-20%</span>
         </div>
     </div>
-<script src="T5.js"></script>
+<script src="t5.js"></script>
 </body>
 </html>
